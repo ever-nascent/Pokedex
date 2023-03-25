@@ -2,7 +2,7 @@
   "name": "pokedex",
   "version": "1.0.0",
   "description": "A fully functional Pokedex that allows Trainers to search and browse information about different types of Pokemon.",
-  "main": "scraper.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
