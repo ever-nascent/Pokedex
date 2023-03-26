@@ -1,14 +1,14 @@
-const fetch = require('node-superfetch');
-const pokedex = require('../data/pokedex.json');
+const { API_LINK } = require('../../config.json');
+const pokedex = require('../../data/pokedex.json');
 
 const fs = require('fs');
+const fetch = require('node-superfetch');
 
-const API_LINK = 'https://pokeapi.co/api/v2/pokemon';
 
 class Utils {
 	async update_pokedex() {
 		try {
-			const { body } = await fetch.get(API_LINK);
+			const { body } = await fetch.get(`${API_LINK}/pokemon`);
 			const to_add = await this.pokemon_to_add(body.count);
 
 			const fetched_poke_data = await this.fetch_pokemon_data(to_add);
@@ -25,14 +25,21 @@ class Utils {
 	}
 
 	async fetch_pokemon_data(pokemon_to_fetch) {
-		for (let i = 0; i < 1; i++) {
-			const { body } = await fetch.get(`${API_LINK}/${pokemon_to_fetch[i]}`);
-			const parsed_pokedata = this.parse_pokedata(body);
-			pokedex.push(parsed_pokedata);
-		}
+		const promises = [];
 
+		for (let i = 0; i < 20; i++) {
+		  const promise = fetch.get(`${API_LINK}/pokemon/${pokemon_to_fetch[i]}`)
+			.then(({ body }) => this.parse_pokedata(body))
+			.then(parsed_pokedata => pokedex.push(parsed_pokedata))
+			.catch(error => console.error(error));
+	  
+		  promises.push(promise);
+		}
+	  
+		await Promise.all(promises);
+	  
 		return fs.writeFileSync('data/pokedex.json', JSON.stringify(pokedex, null, 2), { encoding: 'utf8', flag: 'w', spaces: 2 });
-	}
+	  }
 
 	parse_pokedata(pokedata) {
 		return {
