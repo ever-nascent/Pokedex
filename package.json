@@ -2,15 +2,13 @@
   "name": "pokedex",
   "version": "1.0.0",
   "description": "A fully functional Pokedex that allows Trainers to search and browse information about different types of Pokemon.",
-  "main": "src/index.js",
+  "main": "src/scripts/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Charmed",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "node-superfetch": "^0.3.3",
-    "p-limit": "^4.0.0"
+    "node-superfetch": "^0.3.3"
   }
 }
